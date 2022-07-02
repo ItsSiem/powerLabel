@@ -1,0 +1,334 @@
+﻿<Window x:Class="powerLabel.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:powerLabel"
+        mc:Ignorable="d"
+        Title="powerLabel" Height="500" Width="800">
+
+
+
+    <Grid>
+        <Grid>
+            <TabControl>
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Images/isometrix pixel art printer.png" Height="16" Width="16" />
+                            <TextBlock Text="Label Printing" FontSize="12" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </TabItem.Header>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions >
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+
+
+                        <Button x:Name="scanButton"
+                                Click="scanButton_Click"
+                                IsEnabled="False"
+                                Grid.RowSpan="2"
+                                Width="100"
+                                Height="100">
+                            <TextBlock TextWrapping="Wrap"
+                                       FontSize="28"
+                                       TextAlignment="Center"
+                                       Text="Scan System"/>
+                        </Button>
+                        <Grid x:Name="leftPanelGrid" Grid.RowSpan="2" Visibility="Collapsed">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="22*"/>
+                                <ColumnDefinition Width="375*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Line 
+                                X1="10" Y1="30"
+                                X2="10" Y2="450"
+                                Stroke="Black"
+                                StrokeThickness="3"
+                                />
+                            <StackPanel x:Name="configHistoryStackPanel" Orientation="Vertical"/>
+
+                            <Border Grid.Column="1" 
+                                    Background="white" 
+                                    BorderBrush="Black"
+                                    BorderThickness="2"
+                                    CornerRadius="10"
+                                    Margin="0, 5, 5, 5" Panel.ZIndex="0"
+                                    >
+                                <Grid x:Name="sysConfigGrid">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="15*"/>
+                                        <RowDefinition Height="70*"/>
+                                        <RowDefinition Height="30*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Label x:Name="modelField"
+                                           Content="HP Z400"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="24"
+                                           />
+
+                                    <StackPanel Grid.Row="1">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="CPU:" 
+                                                   FontSize="18"/>
+                                            <Label x:Name="cpuField"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="RAM:" 
+                                                   FontSize="18"/>
+                                            <Label x:Name="ramField"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="Disks:" 
+                                                   FontSize="18"/>
+                                            <Label x:Name="disksField"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="GPU:" 
+                                                   FontSize="18"/>
+                                            <Label x:Name="gpuField"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+
+                                    <Border 
+                                          Background="#fafafa"
+                                          CornerRadius="10"
+                                          Grid.Row="2">
+                                        <Grid 
+                                           Panel.ZIndex="1">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="20*"/>
+                                                <RowDefinition Height="59*"/>
+                                            </Grid.RowDefinitions>
+
+
+                                            <TextBlock Text="Events"
+                                               FontSize="16"/>
+
+                                            <ScrollViewer Grid.Row="1" 
+                                                          PanningMode="HorizontalOnly" 
+                                                          HorizontalScrollBarVisibility="Auto" 
+                                                          VerticalScrollBarVisibility="Hidden"
+                                                          >
+                                                <Viewbox HorizontalAlignment="Left" MaxHeight="75">
+                                                    <StackPanel x:Name="eventsStackpanel"
+                                                                Orientation="Horizontal">
+                                                    </StackPanel>
+                                                </Viewbox>
+                                            </ScrollViewer>
+                                        </Grid>
+                                    </Border>
+
+
+
+                                </Grid>
+                            </Border>
+
+                        </Grid>
+
+
+                        <Grid x:Name="rightTopGrid"
+                              Grid.Column="1">
+                            <StackPanel>
+                                <Label Content="Mark As Order"
+                                       FontSize="22"/>
+
+                                <StackPanel Margin="0, 10" Orientation="Horizontal">
+                                    <Label Content="Order Number" Name="orderNrLabel" Target="{Binding ElementName=orderNr}"/>
+                                    <TextBox Name="orderNr" Width="180" VerticalContentAlignment="Center"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Note: "/>
+                                    <TextBox x:Name="orderNote"
+                                             Width="225"
+                                             Height="100"/>
+                                </StackPanel>
+
+                                <Button x:Name="OrderSave"
+                                        Click="OrderSave_Click"
+                                        Content="Save Order"
+                                        Width="75"
+                                        HorizontalAlignment="Left"
+                                        Margin="10"
+                                        IsEnabled="False"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid x:Name="rightBottomGrid" Grid.Row="1" Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <Label Content="Print Label"
+                                       FontSize="22"/>
+                                <Viewbox Margin="5" Grid.Row="1" Stretch="Uniform">
+                                    <Border BorderBrush="#FFD3CFCF" BorderThickness="1" CornerRadius="1">
+                                        <Grid Name="labelGrid" Width="58" Height="32">
+                                            <TextBlock FontSize="4" Name="labelText" TextWrapping="WrapWithOverflow"></TextBlock>
+                                        </Grid>
+                                    </Border>
+                                </Viewbox>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1"
+                                        VerticalAlignment="Bottom">
+                                <CheckBox Content="+Servicelabel"/>
+                                <Button IsEnabled="False" 
+                                    x:Name="printBtn" 
+                                    Content="Print Label" 
+                                    Click="printBtn_Click" 
+                                    Margin="10" 
+                                    Padding="10,5"/>
+                            </StackPanel>
+
+
+
+                        </Grid>
+
+                    </Grid>
+
+
+
+
+                </TabItem>
+                <TabItem Visibility="Visible">
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Images/isometrix pixel art pc high res.png" Height="16" Width="16"/>
+                            <TextBlock Text="Advanced Specs" FontSize="12" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </TabItem.Header>
+
+                    <Grid Name="AdvancedSpecsGrid" Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <ComboBox Name="partSelector" SelectionChanged="partSelector_SelectionChanged">
+                                <ComboBoxItem Content="Motherboard"/>
+                                <ComboBoxItem Content="Bios"/>
+                                <ComboBoxItem Content="Processor"/>
+                                <ComboBoxItem Content="Memory"/>
+                                <ComboBoxItem Content="Disks"/>
+                                <ComboBoxItem Content="VideoController"/>
+                                <ComboBoxItem Content="Operating System"/>
+                            </ComboBox>
+
+
+                            <ListBox SelectionChanged="componentListBox_SelectionChanged" Name="componentListBox"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Grid.RowSpan="2" Orientation="Horizontal">
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <Grid Name="componentGrid" Margin="0, 10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+
+                </TabItem>
+                <TabItem Visibility="Collapsed">
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Images/tower-pc.png" Height="16" Width="16" />
+                            <TextBlock Text="Component Info"/>
+                        </StackPanel>
+                    </TabItem.Header>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                        <Label Content="Components" FontSize="20"/>
+                        <ListBox>
+                            <ListBoxItem Content="Motherboard" FontSize="16" Margin="0,0,0,20"/>
+                            <ListBoxItem Content="Bios" FontSize="16" Margin="0,0,0,20"/>
+                            <ListBoxItem Content="Processor" FontSize="16" Margin="0,0,0,20"/>
+                            <ListBoxItem Content="Memory" FontSize="16" Margin="0,0,0,20"/>
+                            <ListBoxItem Content="Disks" FontSize="16" Margin="0,0,0,20"/>
+                            <ListBoxItem Content="Videocontroller" FontSize="16" Margin="0,0,0,20"/>
+                            <ListBoxItem Content="Operating System" FontSize="16" Margin="0,0,0,20"/>
+                        </ListBox>
+                        </StackPanel>
+
+
+                        <StackPanel Grid.Column="1">
+                            <Label Content="Specs" FontSize="20"/>
+                            
+                        </StackPanel>
+                        
+                    </Grid>
+
+                </TabItem>
+                <TabItem Visibility="Visible">
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Images/tower-pc.png" Height="16" Width="16" />
+                            <TextBlock Text="System History"/>
+                        </StackPanel>
+                    </TabItem.Header>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button x:Name="reload" Click="reload_Click" Content="Refresh" HorizontalAlignment="Right" VerticalAlignment="Top" Panel.ZIndex="1"/>
+                            <Label Content="Recently Scanned Systems" FontSize="20"/>
+                        <ScrollViewer Margin="0, 30, 0, 0" VerticalScrollBarVisibility="Auto">
+                            <StackPanel x:Name="recentSystemsPanel"/>
+                        </ScrollViewer>
+                        
+                    </Grid>
+
+                </TabItem>
+            </TabControl>
+        </Grid>
+
+        <Button x:Name="settingsBtn" Click="settingsBtn_Click" Padding="0" BorderBrush="Transparent" Background="Transparent" VerticalAlignment="Top" HorizontalAlignment="Right" Height="22" Width="22">
+            <Image Source="Images/settings.png" Height="22" />
+        </Button>
+
+        <TextBlock Text="User: "
+                   VerticalAlignment="Top"
+                   HorizontalAlignment="Right"
+                   Margin="0, 0, 200, 0"
+                   FontSize="16"/>
+        <ComboBox Margin="0, 0, 50, 0" 
+                  x:FieldModifier="public" 
+                  DropDownClosed="employeeDropdown_DropDownClosed" 
+                  SelectionChanged="employeeDropdown_SelectionChanged" 
+                  Name="employeeDropdown"
+                  VerticalAlignment="Top"
+                  HorizontalAlignment="Right"
+                  Width="150"
+                  Height="22"
+                  VerticalContentAlignment="Top"/>
+
+    </Grid>
+
+</Window>
