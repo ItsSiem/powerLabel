@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoUpdaterDotNET;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace powerLabel
     {
         public MainWindow()
         {
+            AutoUpdater.Start("https://github.com/ItsSiem/powerLabel/releases/latest/download/versions.xml");
             InitializeComponent();
             refreshSettings();
         }
