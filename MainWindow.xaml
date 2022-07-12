@@ -187,7 +187,12 @@
 
                             <StackPanel Grid.Column="1"
                                         VerticalAlignment="Bottom">
-                                <CheckBox Content="+Servicelabel"/>
+                                <CheckBox x:Name="boldCheckbox"
+                                          IsChecked="True" 
+                                          Content="Bold"
+                                          Checked="boldCheckbox_Changed"
+                                          Unchecked="boldCheckbox_Changed"/>
+                                <CheckBox IsEnabled="False" Content="+Servicelabel"/>
                                 <Button IsEnabled="False" 
                                     x:Name="printBtn" 
                                     Content="Print Label" 

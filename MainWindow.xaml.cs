@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -171,6 +172,7 @@ namespace powerLabel
         private void drawLabelPreview()
         {
             labelText.Text = LabelPrinting.formatString(ComputerSystem.system.getString());
+            boldCheckbox_Changed(new object(), new RoutedEventArgs());
         }
 
 
@@ -523,5 +525,20 @@ namespace powerLabel
                                 </StackPanel>
             */
             }
+
+        private void boldCheckbox_Changed(object sender, RoutedEventArgs e)
+        {
+            Bold bold = new Bold(new Run(labelText.Text));
+            string normal = labelText.Text;
+            labelText.Text = "";
+            if ((bool)boldCheckbox.IsChecked)
+            {
+                labelText.Inlines.Add(bold);
+            }
+            else
+            {
+                labelText.Text = normal;
+            }
         }
+    }
 }
