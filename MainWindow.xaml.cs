@@ -17,6 +17,8 @@ namespace powerLabel
     {
         public MainWindow()
         {
+            AutoUpdater.Mandatory = true;
+            AutoUpdater.UpdateMode = Mode.Forced;
             AutoUpdater.Start("https://github.com/ItsSiem/powerLabel/releases/latest/download/versions.xml");
             InitializeComponent();
             refreshSettings();
