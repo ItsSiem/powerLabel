@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:powerLabel"
              StartupUri="MainWindow.xaml">
-    <Application.Resources>
+    <!--<Application.Resources>
         <FontFamily x:Key="Barcode">./Fonts/Barcode.ttf#IDAHC39M Code 39 Barcode</FontFamily>
-    </Application.Resources>
+    </Application.Resources>-->
 </Application>

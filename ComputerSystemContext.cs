@@ -13,7 +13,7 @@ namespace powerLabel
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-            optionsBuilder.UseMySql($"server={ip};database={database};user={user};password={password};");
+            optionsBuilder.UseMySql($"server={ip};database={database};user={user};password={password};", new MySqlServerVersion(new System.Version(8, 0)));
 
 			// Connection strings for updating the database
             //optionsBuilder.UseMySql($"server=localhost;database=powerlabeldb;user=root;password=;");
