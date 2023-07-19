@@ -88,7 +88,7 @@ namespace powerLabel
             }
 
             // RAM Label string processing
-            string ramString = memoryModules.Sum(item => Convert.ToInt64(item.module.capacity)) / 1073741824 + "GB " + MemoryModule.memoryTypeLookup[memoryModules.First().module.memoryType];
+            string ramString = memoryModules.Sum(item => Convert.ToInt64(item.module.capacity)) / 1073741824 + "GB (" + memoryModules.Count + ") " + MemoryModule.memoryTypeLookup[memoryModules.First().module.memoryType];
 
             // Disk Label string processing
             string diskString = "";
