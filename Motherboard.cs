@@ -15,8 +15,15 @@ namespace powerLabel
 
             foreach (ManagementObject system in PSInterface.RunPowershell("SELECT * FROM Win32_ComputerSystem"))
             {
-                motherboard.model = (string)system["Model"];
                 motherboard.manufacturer = (string)system["Manufacturer"];
+                if (motherboard.manufacturer.Trim().Equals("Lenovo", System.StringComparison.InvariantCultureIgnoreCase))
+                {
+                    motherboard.model = (string)system["SystemFamily"];
+                }
+                else
+                {
+                    motherboard.model = (string)system["Model"];
+                }
             }
 
             foreach (ManagementObject bios in PSInterface.RunPowershell("SELECT * FROM Win32_Bios"))
