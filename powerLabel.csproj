@@ -3,7 +3,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net7.0-windows</TargetFramework>
 	<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
-    <Version>0.1.3.0</Version>
+    <Version>0.1.4.0</Version>
     <UseWPF>true</UseWPF>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <ApplicationManifest>app.manifest</ApplicationManifest>
