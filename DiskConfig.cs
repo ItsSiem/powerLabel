@@ -37,7 +37,7 @@ namespace powerLabel
             "SSA",
             "Fibre Channel",
             "USB",
-            "", //RAID
+            "RAID",
             "iSCSI",
             "SAS",
             "SATA",
