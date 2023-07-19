@@ -450,19 +450,23 @@ namespace powerLabel
             recentSystemsPanel.Children.Clear();
             using (var db = new ComputerSystemContext())
             {
-                List<Event> events = db.Events.Where(a => Regex.IsMatch(a.name, ".*scan.*")).OrderByDescending(b => b.date).Include(c => c.computerSystem).ToList();
+                List<Event> events = db.Events.Where(a => Regex.IsMatch(a.name, ".*scan.*")).OrderByDescending(b => b.date).Include(c => c.computerSystem).Take(50).ToList();
                 Event prevEvent = new Event { date = DateTime.Parse("1990-01-01") };
 
                 foreach (Event evnt in events)
                 {
-                    ComputerSystem system = db.ComputerSystems.Where(a => a.id == evnt.computerSystem.id).Include(a => a.motherboard)
+                    ComputerSystem system = db.ComputerSystems
+                        .Where(a => a.id == evnt.computerSystem.id)
+                        .Include(a => a.motherboard)
                         .Include(a => a.bios)
                         .Include(a => a.processor)
                         .Include(a => a.memoryModules).ThenInclude(a => a.module)
                         .Include(a => a.diskConfigs).ThenInclude(a => a.disk)
                         .Include(a => a.videoControllerConfigs).ThenInclude(a => a.videoController)
                         .Include(a => a.operatingSystem)
-                        .ToList().First();
+                        .ToList()
+                        .First();
+
                     string time = evnt.date.ToShortTimeString();
 
                     if (evnt.date.ToShortDateString() != prevEvent.date.ToShortDateString())
