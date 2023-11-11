@@ -80,7 +80,8 @@ namespace powerLabel
             // CPU Label string processing
             string cpuString = processor.name;
             cpuString = getShortString(cpuString, new string[] {
-                @"(((Platinum)|(Gold)|(Silver)|(Bronze)) \w*-*\d+\w*)|(\w+-*\d{3,}\w*( v\d)*)" // regex voor vrijwel alle core i en xeon processoren vanaf 2006
+                @"(Platinum|Gold|Silver|Bronze)(?: )(\w*-*\d+\w*)", // Xeon gold, silver etc.
+                @"(\w+-*\d{3,}\w*)(?: )*(v\d)*", // Core i and Xeon non metal
             });
             if (processorAmount > 1)
             {
@@ -124,8 +125,8 @@ namespace powerLabel
             {
                 gpuString += getShortString(gpu.videoController.name, new string[] { 
                     @"\w{2,3} Graphics \w+",        // Intel intergrated graphics (HD Graphics 405, Pro Graphics 600)
-                    @"Quadro (RTX )*\w+",           // Quadro's (Quadro RTX 4000, Quadro K2200, Quadro M2000M)
-                    @"GeForce \wTX \d{3,}( \w+)*"   // Nvidia GeForce GTX / RTX 3060 Ti
+                    @"(Quadro|RTX) *(\w+) ?(\d+)?",           // Quadro's (Quadro RTX 4000, Quadro K2200, Quadro M2000M)
+                    @"(GeForce) (\wTX?) (\d{3,})(?: (\w+))*"   // Nvidia GeForce GTX / RTX 3060 Ti
                 }) + "\r\n";
             }
 
@@ -149,6 +150,8 @@ namespace powerLabel
                 if (item.IsMatch(input))
                 {
                     var match = item.Match(input);
+                    if (match.Groups.Count == 1)
+                        return match.Groups[0].Value;
                     var s = "";
                     for(int j = 1; j < match.Groups.Count; j++)
                     {
