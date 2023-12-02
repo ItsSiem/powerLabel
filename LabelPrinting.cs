@@ -1,4 +1,5 @@
-﻿using System;
+﻿using powerLabel.Models;
+using System;
 using System.Management;
 using System.Printing;
 using System.Windows;

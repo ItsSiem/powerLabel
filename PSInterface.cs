@@ -1,10 +1,12 @@
-﻿using System.Management;
+﻿using System.Linq;
+using System.Management;
+using System.Windows.Forms;
 
 namespace powerLabel
 {
     public class PSInterface
     {
-        public static ManagementObjectCollection RunPowershell(string command)
+        public static ManagementObjectCollection GetObjects(string command)
         {
             ManagementScope scope = new ManagementScope();
             scope.Connect();
@@ -15,6 +17,11 @@ namespace powerLabel
 
             ManagementObjectCollection queryCollection = searcher.Get();
             return queryCollection;
+        }
+
+        public static ManagementObject GetObject(string objectPath)
+        {
+            return GetObjects($"SELECT * FROM {objectPath}").OfType<ManagementObject>().FirstOrDefault();
         }
     }
 }

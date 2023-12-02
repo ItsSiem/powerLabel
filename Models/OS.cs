@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Management;
 
-namespace powerLabel
+namespace powerLabel.Models
 {
     public class OS
     {
@@ -20,7 +20,7 @@ namespace powerLabel
         public static OS GetOS()
         {
             OS os = new OS();
-            foreach (ManagementObject item in PSInterface.RunPowershell("SELECT * FROM Win32_OperatingSystem"))
+            foreach (ManagementObject item in PSInterface.GetObjects("SELECT * FROM Win32_OperatingSystem"))
             {
                 os.caption = (string)item["Caption"];
                 os.language = languageTable[(uint)item["OSLanguage"]];
@@ -34,8 +34,8 @@ namespace powerLabel
             if (obj == null || GetType() != obj.GetType()) return false;
 
             OS os = (OS)obj;
-            if (this.caption.Trim() == os.caption.Trim() &&
-                this.language.Trim() == os.language.Trim()
+            if (caption.Trim() == os.caption.Trim() &&
+                language.Trim() == os.language.Trim()
                 )
             {
                 return true;

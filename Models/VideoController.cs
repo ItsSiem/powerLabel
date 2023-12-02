@@ -1,4 +1,4 @@
-﻿namespace powerLabel
+﻿namespace powerLabel.Models
 {
     public class VideoController
     {
@@ -12,9 +12,9 @@
             if (obj == null || GetType() != obj.GetType()) return false;
 
             VideoController videoController = (VideoController)obj;
-            if (this.manufacturer.Trim() == videoController.manufacturer.Trim() &&
-                this.name.Trim() == videoController.name.Trim() &&
-                this.vram == videoController.vram
+            if (manufacturer.Trim() == videoController.manufacturer.Trim() &&
+                name.Trim() == videoController.name.Trim() &&
+                vram == videoController.vram
                 )
             {
                 return true;

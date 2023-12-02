@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Windows;
 
-namespace powerLabel
+namespace powerLabel.Models
 {
     public class Event
     {
@@ -24,7 +24,7 @@ namespace powerLabel
 
             try
             {
-                this.computerSystem = cs;
+                computerSystem = cs;
             }
             catch (Exception)
             {
@@ -33,7 +33,7 @@ namespace powerLabel
             }
 
             this.employee = employee;
-            this.name = eventName;
+            name = eventName;
             this.description = description;
             this.note = note;
             this.date = date;

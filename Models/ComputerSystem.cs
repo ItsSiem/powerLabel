@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using powerLabel.ComponentProviders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
-namespace powerLabel
+namespace powerLabel.Models
 {
     public class ComputerSystem
     {
@@ -20,16 +22,16 @@ namespace powerLabel
 
         public static ComputerSystem system { get; set; }
 
-        public static ComputerSystem GetSystem()
+        public static async Task<ComputerSystem> GetSystemAsync()
         {
             system = new ComputerSystem();
-            system.motherboard = Motherboard.GetMotherboard();
-            system.bios = Bios.GetBios();
-            system.processor = Processor.GetProcessor(system);
-            system.memoryModules = MemoryConfig.GetMemory(system);
-            system.diskConfigs = DiskConfig.GetDisks(system);
+            system.motherboard = await new MotherboardProvider().GetComponentAsync();
+            system.bios = await new BiosProvider().GetComponentAsync();
+            system.processor = await new ProcessorProvider().GetComponentAsync();
+            system.memoryModules = await new MemoryProvider().GetComponentAsync();
+            system.diskConfigs = await new DiskProvider().GetComponentAsync();
             system.videoControllerConfigs = VideoControllerConfig.GetVideoControllers(system);
-            system.operatingSystem = OS.GetOS();
+            system.operatingSystem = await new OSProvider().GetComponentAsync();
 
             using (var db = new ComputerSystemContext())
             {
@@ -59,7 +61,7 @@ namespace powerLabel
                     }
                 }
             }
-            ComputerSystem.system = system;
+            system = system;
             return system;
         }
 
@@ -72,7 +74,7 @@ namespace powerLabel
 
             // Model Label string processing
             string modelString = motherboard.model;
-            modelString = getShortString(modelString, new string[] { 
+            modelString = getShortString(modelString, new string[] {
                 @"(?<ZLine>HP Z\w+)(?:(?!G)[a-zA-Z ])*(?<screensize>\d{2}\w?)?(?:(?![G])[A-Za-z .\d])*(?<generation>G\d)?",     // HP Systems (HP Z840, HP ZBook 15 G3, HP ZBook 14U G5)
                 @"Precision \w* \w*"            // DELL Systems (Precision WorkStation T3500, Precision Tower 3620)
             });
@@ -95,7 +97,7 @@ namespace powerLabel
             string diskString = "";
             List<string> disks = new List<string>();
             List<string> doneDisks = new List<string>();
-            foreach (DiskConfig disk in system.diskConfigs) 
+            foreach (DiskConfig disk in system.diskConfigs)
             {
                 disks.Add(disk.ToString());
             }
@@ -115,7 +117,7 @@ namespace powerLabel
                         doneDisks.Add(disk);
                     }
                 }
-                
+
             }
 
 
@@ -123,7 +125,7 @@ namespace powerLabel
             string gpuString = "";
             foreach (VideoControllerConfig gpu in videoControllerConfigs)
             {
-                gpuString += getShortString(gpu.videoController.name, new string[] { 
+                gpuString += getShortString(gpu.videoController.name, new string[] {
                     @"\w{2,3} Graphics \w+",        // Intel intergrated graphics (HD Graphics 405, Pro Graphics 600)
                     @"(Quadro|RTX) *(\w+) ?(\d+)?",           // Quadro's (Quadro RTX 4000, Quadro K2200, Quadro M2000M)
                     @"(GeForce) (\wTX?) (\d{3,})(?: (\w+))*"   // Nvidia GeForce GTX / RTX 3060 Ti
@@ -153,7 +155,7 @@ namespace powerLabel
                     if (match.Groups.Count == 1)
                         return match.Groups[0].Value;
                     var s = "";
-                    for(int j = 1; j < match.Groups.Count; j++)
+                    for (int j = 1; j < match.Groups.Count; j++)
                     {
                         s += match.Groups[j].Value;
                         if (j < match.Groups.Count)
@@ -174,14 +176,14 @@ namespace powerLabel
             ComputerSystem sys = (ComputerSystem)obj;
             try
             {
-                if (((this.motherboard == null && sys.motherboard == null) || this.motherboard.Equals(sys.motherboard)) &&
-                ((this.bios == null && sys.bios == null) || this.bios.Equals(sys.bios)) &&
-                (this.processorAmount == sys.processorAmount) &&
-                ((this.processor == null && sys.processor == null) || this.processor.Equals(sys.processor)) &&
-                ((this.memoryModules == null && sys.memoryModules == null) || this.memoryModules.SequenceEqual(sys.memoryModules)) &&
-                ((this.diskConfigs == null && sys.diskConfigs == null) || this.diskConfigs.SequenceEqual(sys.diskConfigs)) &&
-                ((this.videoControllerConfigs == null && sys.videoControllerConfigs == null) || this.videoControllerConfigs.SequenceEqual(sys.videoControllerConfigs)) &&
-                ((this.operatingSystem == null && sys.operatingSystem == null) || this.operatingSystem.Equals(sys.operatingSystem))
+                if ((motherboard == null && sys.motherboard == null || motherboard.Equals(sys.motherboard)) &&
+                (bios == null && sys.bios == null || bios.Equals(sys.bios)) &&
+                processorAmount == sys.processorAmount &&
+                (processor == null && sys.processor == null || processor.Equals(sys.processor)) &&
+                (memoryModules == null && sys.memoryModules == null || memoryModules.SequenceEqual(sys.memoryModules)) &&
+                (diskConfigs == null && sys.diskConfigs == null || diskConfigs.SequenceEqual(sys.diskConfigs)) &&
+                (videoControllerConfigs == null && sys.videoControllerConfigs == null || videoControllerConfigs.SequenceEqual(sys.videoControllerConfigs)) &&
+                (operatingSystem == null && sys.operatingSystem == null || operatingSystem.Equals(sys.operatingSystem))
                 )
                 {
                     return true;
@@ -193,5 +195,5 @@ namespace powerLabel
                 return false;
             }
         }
-    }    
+    }
 }

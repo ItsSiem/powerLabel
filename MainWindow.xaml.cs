@@ -1,5 +1,6 @@
 ﻿using AutoUpdaterDotNET;
 using Microsoft.EntityFrameworkCore;
+using powerLabel.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,11 +38,11 @@ namespace powerLabel
 
         }
 
-        private void scanSystem(object sender, RoutedEventArgs e)
+        private async void scanSystem(object sender, RoutedEventArgs e)
         {
             try
             {
-                ComputerSystem.GetSystem();
+                await ComputerSystem.GetSystemAsync();
                 ComputerSystem system = ComputerSystem.system;
 
                 // Model Label string processing
@@ -124,7 +125,7 @@ namespace powerLabel
             }
 
             Database.AddSystem(ComputerSystem.system);
-            ComputerSystem.GetSystem();
+            await ComputerSystem.GetSystemAsync();
             try
             {
 

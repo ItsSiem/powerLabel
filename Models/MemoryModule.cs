@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace powerLabel
+namespace powerLabel.Models
 {
     public class MemoryModule
     {
@@ -34,12 +34,12 @@ namespace powerLabel
             if (obj == null || GetType() != obj.GetType()) return false;
 
             MemoryModule memory = (MemoryModule)obj;
-            if (this.capacity == memory.capacity &&
-                this.maxClockspeed == memory.maxClockspeed &&
-                this.formFactor == memory.formFactor &&
-                this.memoryType == memory.memoryType &&
-                this.partNubmer.Trim() == memory.partNubmer.Trim() &&
-                this.serialNubmer.Trim() == memory.serialNubmer.Trim()
+            if (capacity == memory.capacity &&
+                maxClockspeed == memory.maxClockspeed &&
+                formFactor == memory.formFactor &&
+                memoryType == memory.memoryType &&
+                partNubmer.Trim() == memory.partNubmer.Trim() &&
+                serialNubmer.Trim() == memory.serialNubmer.Trim()
                 )
             {
                 return true;

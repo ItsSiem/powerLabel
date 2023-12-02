@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Management;
 
-namespace powerLabel
+namespace powerLabel.Models
 {
     public class VideoControllerConfig
     {
@@ -13,7 +13,7 @@ namespace powerLabel
         {
             List<VideoControllerConfig> list = new List<VideoControllerConfig>();
 
-            ManagementObjectCollection returned = PSInterface.RunPowershell("SELECT * FROM Win32_VideoController");
+            ManagementObjectCollection returned = PSInterface.GetObjects("SELECT * FROM Win32_VideoController");
             foreach (ManagementObject item in returned)
             {
                 VideoControllerConfig videoController = new VideoControllerConfig();
@@ -32,7 +32,7 @@ namespace powerLabel
             if (obj == null || GetType() != obj.GetType()) return false;
 
             VideoControllerConfig videoControllerConfig = (VideoControllerConfig)obj;
-            if (this.videoController.Equals(videoControllerConfig.videoController)
+            if (videoController.Equals(videoControllerConfig.videoController)
                 )
             {
                 return true;

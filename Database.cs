@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using powerLabel.Models;
 using System;
 using System.Linq;
 using System.Windows;

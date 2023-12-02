@@ -1,6 +1,6 @@
 ﻿using System.Management;
 
-namespace powerLabel
+namespace powerLabel.Models
 {
     public class ProcessorConfig
     {
@@ -13,7 +13,7 @@ namespace powerLabel
         {
             ProcessorConfig processorConfig = new ProcessorConfig();
 
-            ManagementObjectCollection returned = PSInterface.RunPowershell("SELECT * FROM Win32_Processor");
+            ManagementObjectCollection returned = PSInterface.GetObjects("SELECT * FROM Win32_Processor");
 
             ManagementObject item = null;
 
@@ -23,13 +23,13 @@ namespace powerLabel
                 break;
             }
 
-            processorConfig.amount = (returned.Count > 1) ? 2 : 1;
+            processorConfig.amount = returned.Count > 1 ? 2 : 1;
             processorConfig.processor = new Processor();
             processorConfig.processor.name = (string)item["Name"];
             processorConfig.processor.cores = (uint)item["NumberOfCores"];
             processorConfig.processor.threads = (uint)item["NumberOfLogicalProcessors"];
             processorConfig.computerSystem = system;
-            
+
             return processorConfig;
         }
 
@@ -38,9 +38,9 @@ namespace powerLabel
             if (obj == null || GetType() != obj.GetType()) return false;
 
             ProcessorConfig processorConfig = (ProcessorConfig)obj;
-            if (this.processor.Equals(processorConfig.processor) &&
-                this.amount == processorConfig.amount &&
-                this.computerSystem.motherboard.Equals(processorConfig.computerSystem.motherboard)
+            if (processor.Equals(processorConfig.processor) &&
+                amount == processorConfig.amount &&
+                computerSystem.motherboard.Equals(processorConfig.computerSystem.motherboard)
                 )
             {
                 return true;

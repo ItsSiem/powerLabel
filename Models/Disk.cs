@@ -1,4 +1,4 @@
-﻿namespace powerLabel
+﻿namespace powerLabel.Models
 {
     public class Disk
     {
@@ -13,10 +13,10 @@
             if (obj == null || GetType() != obj.GetType()) return false;
 
             Disk disk = (Disk)obj;
-            if (this.model.Trim() == disk.model.Trim() &&
-                this.size == disk.size &&
-                this.mediaType.Trim() == disk.mediaType.Trim() &&
-                this.serialNumber.Trim() == disk.serialNumber.Trim()
+            if (model.Trim() == disk.model.Trim() &&
+                size == disk.size &&
+                mediaType.Trim() == disk.mediaType.Trim() &&
+                serialNumber.Trim() == disk.serialNumber.Trim()
                 )
             {
                 return true;
