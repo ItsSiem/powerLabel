@@ -20,7 +20,7 @@ namespace powerLabel
         public static OS GetOS()
         {
             OS os = new OS();
-            foreach (ManagementObject item in PSInterface.RunPowershell("SELECT * FROM Win32_OperatingSystem"))
+            foreach (ManagementObject item in PSInterface.RunObjectQuery("SELECT * FROM Win32_OperatingSystem"))
             {
                 os.caption = (string)item["Caption"];
                 os.language = languageTable[(uint)item["OSLanguage"]];

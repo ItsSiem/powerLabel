@@ -13,7 +13,7 @@ namespace powerLabel
         {
             Processor processor = new Processor();
 
-            ManagementObjectCollection returned = PSInterface.RunPowershell("SELECT * FROM Win32_Processor");
+            ManagementObjectCollection returned = PSInterface.RunObjectQuery("SELECT * FROM Win32_Processor");
 
             ManagementObject item = null;
 

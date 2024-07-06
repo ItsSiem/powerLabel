@@ -54,7 +54,7 @@ namespace powerLabel
             List<DiskConfig> list = new List<DiskConfig>();
 
             uint osDiskId = 255;
-            ManagementObjectCollection partitions = PSInterface.RunPowershell("SELECT * FROM Win32_DiskPartition");
+            ManagementObjectCollection partitions = PSInterface.RunObjectQuery("SELECT * FROM Win32_DiskPartition");
             foreach (ManagementObject item in partitions)
             {
                 if ((bool)item["BootPartition"])

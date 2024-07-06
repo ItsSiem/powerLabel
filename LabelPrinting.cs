@@ -13,64 +13,13 @@ namespace powerLabel
         {
             try
             {
-                // Add printer event
-                using (var db = new ComputerSystemContext())
-                {
-                    string employee = "";
-                    foreach (Window window in Application.Current.Windows)
-                    {
-                        if (window.GetType() == typeof(MainWindow))
-                        {
-                            employee = (window as MainWindow).employeeDropdown.Text;
-                        }
-                    }
-                    if (employee == "")
-                    {
-                        MessageBox.Show("No employee selected");
-                        return;
-                    }
-                    db.Attach(ComputerSystem.system);
-                    db.Events.Add(Event.NewPrintEvent(employee, DateTime.Now, db, ComputerSystem.system));
-                    db.SaveChanges();
-                }
+                // Set registry to allow RPC over remote pipes
+                string RPCPath = "HKLM:\\Software\\Policies\\Microsoft\\Windows NT\\Printers\\RPC";
+                PSInterface.RunPowershell($"If (-NOT (Test-Path '{RPCPath}')) {{ New-Item -Path '{RPCPath}' -Force | Out-Null}}");
+                PSInterface.RunPowershell($"New-ItemProperty -Path '{RPCPath}' -Name 'RpcUseNamedPipeProtocol' -Value 1 -PropertyType DWORD");
 
                 // Add printer
-                using (ManagementClass win32Printer = new ManagementClass("Win32_Printer"))
-                {
-                    using (ManagementBaseObject inputParam =
-                       win32Printer.GetMethodParameters("AddPrinterConnection"))
-                    {
-                        inputParam.SetPropertyValue("Name", $"\\\\{SettingsHandler.ReadSettings().printerHost}\\{SettingsHandler.ReadSettings().printerShareName}");
-
-                        using (ManagementBaseObject result =
-                            (ManagementBaseObject)win32Printer.InvokeMethod("AddPrinterConnection", inputParam, null))
-                        {
-                            uint errorCode = (uint)result.Properties["returnValue"].Value;
-
-                            switch (errorCode)
-                            {
-                                case 0:
-                                    Console.Out.WriteLine("Successfully connected printer.");
-                                    break;
-                                case 5:
-                                    Console.Out.WriteLine("Access Denied.");
-                                    break;
-                                case 123:
-                                    Console.Out.WriteLine("The filename, directory name, or volume label syntax is incorrect.");
-                                    break;
-                                case 1801:
-                                    Console.Out.WriteLine("Invalid Printer Name.");
-                                    break;
-                                case 1930:
-                                    Console.Out.WriteLine("Incompatible Printer Driver.");
-                                    break;
-                                case 3019:
-                                    Console.Out.WriteLine("The specified printer driver was not found on the system and needs to be downloaded.");
-                                    break;
-                            }
-                        }
-                    }
-                }
+                PSInterface.RunPowershell($"Add-Printer -ConnectionName \"\\\\{SettingsHandler.ReadSettings().printerHost}\\{SettingsHandler.ReadSettings().printerShareName}");
 
                 FrameworkElement e = grid as System.Windows.FrameworkElement;
                 if (e == null)
@@ -127,12 +76,36 @@ namespace powerLabel
                         printer.Delete();
                     }
                 }
-        }
+
+                // Unset RPC over remote pipes
+                PSInterface.RunPowershell($"New-ItemProperty -Path '{RPCPath}' -Name 'RpcUseNamedPipeProtocol' -Value 0 -PropertyType DWORD");
+
+                // Add printer event
+                using (var db = new ComputerSystemContext())
+                {
+                    string employee = "";
+                    foreach (Window window in Application.Current.Windows)
+                    {
+                        if (window.GetType() == typeof(MainWindow))
+                        {
+                            employee = (window as MainWindow).employeeDropdown.Text;
+                        }
+                    }
+                    if (employee == "")
+                    {
+                        MessageBox.Show("No employee selected");
+                        return;
+                    }
+                    db.Attach(ComputerSystem.system);
+                    db.Events.Add(Event.NewPrintEvent(employee, DateTime.Now, db, ComputerSystem.system));
+                    db.SaveChanges();
+                }
+            }
             catch (Exception ex)
             {
                 MessageBox.Show("Printing process returned an error: " + ex.Message);
             }
-}
+        }
 
         public static string formatString(string str)
         {

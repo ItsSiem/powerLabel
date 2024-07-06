@@ -23,7 +23,7 @@ namespace powerLabel
         {
             List<MemoryConfig> list = new List<MemoryConfig>();
 
-            ManagementObjectCollection returned = PSInterface.RunPowershell("SELECT * FROM Win32_PhysicalMemory");
+            ManagementObjectCollection returned = PSInterface.RunObjectQuery("SELECT * FROM Win32_PhysicalMemory");
             foreach (ManagementObject item in returned)
             {
                 MemoryConfig module = new MemoryConfig(system);

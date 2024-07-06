@@ -13,7 +13,7 @@ namespace powerLabel
         {
             List<VideoControllerConfig> list = new List<VideoControllerConfig>();
 
-            ManagementObjectCollection returned = PSInterface.RunPowershell("SELECT * FROM Win32_VideoController");
+            ManagementObjectCollection returned = PSInterface.RunObjectQuery("SELECT * FROM Win32_VideoController");
             foreach (ManagementObject item in returned)
             {
                 VideoControllerConfig videoController = new VideoControllerConfig();

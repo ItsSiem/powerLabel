@@ -4,7 +4,7 @@ namespace powerLabel
 {
     public class PSInterface
     {
-        public static ManagementObjectCollection RunPowershell(string command)
+        public static ManagementObjectCollection RunObjectQuery(string command)
         {
             ManagementScope scope = new ManagementScope();
             scope.Connect();
@@ -16,5 +16,23 @@ namespace powerLabel
             ManagementObjectCollection queryCollection = searcher.Get();
             return queryCollection;
         }
+
+        public static void RunPowershell(string command)
+        {
+            var processInfo = new System.Diagnostics.ProcessStartInfo
+            {
+                Verb = "runas",
+                LoadUserProfile = true,
+                FileName = "powershell.exe",
+                Arguments = command,
+                RedirectStandardOutput = false,
+                UseShellExecute = true,
+                CreateNoWindow = true
+            };
+
+            var p = System.Diagnostics.Process.Start(processInfo);
+            p.WaitForExit();
+        }
+
     }
 }

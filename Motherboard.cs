@@ -13,7 +13,7 @@ namespace powerLabel
         {
             Motherboard motherboard = new Motherboard();
 
-            foreach (ManagementObject system in PSInterface.RunPowershell("SELECT * FROM Win32_ComputerSystem"))
+            foreach (ManagementObject system in PSInterface.RunObjectQuery("SELECT * FROM Win32_ComputerSystem"))
             {
                 motherboard.manufacturer = (string)system["Manufacturer"];
                 if (motherboard.manufacturer.Trim().Equals("Lenovo", System.StringComparison.InvariantCultureIgnoreCase))
@@ -26,7 +26,7 @@ namespace powerLabel
                 }
             }
 
-            foreach (ManagementObject bios in PSInterface.RunPowershell("SELECT * FROM Win32_Bios"))
+            foreach (ManagementObject bios in PSInterface.RunObjectQuery("SELECT * FROM Win32_Bios"))
             {
                 motherboard.serialNumber = (string)bios["SerialNumber"];
             }

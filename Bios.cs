@@ -13,7 +13,7 @@ namespace powerLabel
         {
             Bios bios = new Bios();
 
-            foreach (ManagementObject item in PSInterface.RunPowershell("SELECT * FROM Win32_Bios"))
+            foreach (ManagementObject item in PSInterface.RunObjectQuery("SELECT * FROM Win32_Bios"))
             {
                 bios.version = (string)item["SMBIOSBIOSVersion"];
                 bios.date = DateTime.ParseExact(((string)item["ReleaseDate"]).Substring(0, ((string)item["ReleaseDate"]).Length - 4), "yyyyMMddHHmmss.FFFFFF", null);
