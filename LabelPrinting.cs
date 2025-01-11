@@ -18,6 +18,10 @@ namespace powerLabel
                 PSInterface.RunPowershell($"If (-NOT (Test-Path '{RPCPath}')) {{ New-Item -Path '{RPCPath}' -Force | Out-Null}}");
                 PSInterface.RunPowershell($"New-ItemProperty -Path '{RPCPath}' -Name 'RpcUseNamedPipeProtocol' -Value 1 -PropertyType DWORD");
 
+                // Workaround for W11 24H2
+                PSInterface.RunPowershell("Set-SmbClientConfiguration -EnableInsecureGuestLogons $true -Force");
+                PSInterface.RunPowershell("Set-SmbClientConfiguration -RequireSecuritySignature $false -Force");
+
                 // Add printer
                 PSInterface.RunPowershell($"Add-Printer -ConnectionName \"\\\\{SettingsHandler.ReadSettings().printerHost}\\{SettingsHandler.ReadSettings().printerShareName}");
 
@@ -79,6 +83,10 @@ namespace powerLabel
 
                 // Unset RPC over remote pipes
                 PSInterface.RunPowershell($"New-ItemProperty -Path '{RPCPath}' -Name 'RpcUseNamedPipeProtocol' -Value 0 -PropertyType DWORD");
+
+                // Reverse 24H2 workaround
+                PSInterface.RunPowershell("Set-SmbClientConfiguration -EnableInsecureGuestLogons $false -Force");
+                PSInterface.RunPowershell("Set-SmbClientConfiguration -RequireSecuritySignature $true -Force");
 
                 // Add printer event
                 using (var db = new ComputerSystemContext())
