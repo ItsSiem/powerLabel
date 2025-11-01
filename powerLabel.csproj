@@ -3,7 +3,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net7.0-windows</TargetFramework>
 	<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
-    <Version>0.1.7.0</Version>
+    <Version>0.1.7.1</Version>
     <UseWPF>true</UseWPF>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -32,6 +32,7 @@
     <None Remove="Images\settings.png" />
     <None Remove="Images\tower-pc.png" />
     <None Remove="settings.json" />
+    <None Remove="versions.xml" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="WbemScripting">
@@ -97,6 +98,9 @@
     <Resource Include="settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="versions.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
@@ -110,10 +114,5 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="versions.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 </Project>
