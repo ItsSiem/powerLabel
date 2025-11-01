@@ -72,8 +72,8 @@ namespace powerLabel
 
             // Model Label string processing
             string modelString = motherboard.model;
-            modelString = getShortString(modelString, new string[] { 
-                @"(?<ZLine>HP Z\w+)(?:(?!G)[a-zA-Z ])*(?<screensize>\d{2}\w?)?(?:(?![G])[A-Za-z .\d])*(?<generation>G\d)?",     // HP Systems (HP Z840, HP ZBook 15 G3, HP ZBook 14U G5)
+            modelString = getShortString(modelString, new string[] {
+                @"(?<ZLine>HP Z\w+)( (?<Stupidname>Firefly|Power|Fury|Studio|Mini))*(?:(?!G)[a-zA-Z ])*(?<screensize>\d{2}\w?)?(?:(?![G])[A-Za-z .\d])*(?<generation>G\d+)?",     // HP Systems (HP Z840, HP ZBook 15 G3, HP ZBook 14U G5)
                 @"Precision \w* \w*"            // DELL Systems (Precision WorkStation T3500, Precision Tower 3620)
             });
 
